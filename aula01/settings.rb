@@ -17,13 +17,13 @@ class Settings
 
   def define_variable(key, value, readonly)
     instance_variable_set("@#{key}", value)
-    define_setter(key, value, readonly)
     define_getter(key)
+    return readonly_setting_error(key) if readonly
+    define_setter(key, value)
   end  
 
-  def define_setter(key, value, readonly)
+  def define_setter(key, value)
     define_singleton_method("#{key}=") do |value|
-      return readonly_setting_error(key) if readonly
       instance_variable_set("@#{key}", value)
     end
   end
@@ -38,7 +38,7 @@ class Settings
     puts "Erro: configuração '#{key}' é somente leitura"
   end  
 
-  def method_missing(key)
+  def method_missing(key, *args)
     "Configuração '#{key}' não existe."
   end
 end
