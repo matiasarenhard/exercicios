@@ -16,3 +16,8 @@ puts settings.retry # => "Configuração 'retry' não #existe."
 # Checando se um método está disponível
 puts settings.respond_to?(:timeout) # => true
 puts settings.respond_to?(:retry) # => false
+
+# Adicionando aliases 
+settings.add(:timeout, 30, aliases: :espera)
+puts settings.timeout # => 30
+puts settings.espera  # => 30
