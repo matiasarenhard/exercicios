@@ -21,3 +21,5 @@ puts settings.respond_to?(:retry) # => false
 settings.add(:timeout, 30, aliases: :espera)
 puts settings.timeout # => 30
 puts settings.espera  # => 30
+settings.timeout = 60
+puts settings.timeout # => 60
