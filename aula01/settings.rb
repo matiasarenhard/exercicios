@@ -10,6 +10,15 @@ class Settings
     end  
   end
 
+  def all
+    result = {}
+    instance_variables.each do |var|
+      key = var.to_s.delete_prefix("@").to_sym
+      result[key] = instance_variable_get(var)
+    end
+    puts result
+  end
+
   def method_missing(key)
     "Configuração '#{key}' não existe."
   end

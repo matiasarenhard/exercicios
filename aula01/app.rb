@@ -17,14 +17,19 @@ puts settings.retry # => "Configuração 'retry' não #existe."
 puts settings.respond_to?(:timeout) # => true
 puts settings.respond_to?(:retry) # => false
 
-# Adicionando aliases 
+# Suporte a aliases 
 settings.add(:timeout, 30, aliases: :espera)
 puts settings.timeout # => 30
 puts settings.espera  # => 30
-settings.timeout = 60
-puts settings.timeout # => 60
 
-# Adicionando configuração somente leitura
+# Configuração somente leitura
 settings.add(:api_key, "SECRET", readonly: true)
 settings.api_key = "HACKED" # => Erro: configuração 'api_key' é somente leitura
+
+# Listagem de configurações
+settings.all # => Retorna um hash com todas as configurações
+
+# Integração com method_missing para setters
+settings.timeout = 60
+puts settings.timeout # => 60
 
