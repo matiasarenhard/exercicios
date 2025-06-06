@@ -1,4 +1,6 @@
 class HtmlBuilder
+  attr_accessor :html
+
   def initialize(&block)
     @html = ""
     instance_eval(&block) if block_given?
@@ -13,18 +15,18 @@ class HtmlBuilder
   end
 
   def result
-    @html
+    html
   end
 
   private
 
   def build_tag(tag, content = nil, &block)
-    @html << "<#{tag}>"
+    html << "<#{tag}>"
     if block_given?
       instance_eval(&block)
     else
-      @html << content
+      html << content
     end
-    @html << "</#{tag}>"
+    html << "</#{tag}>"
   end
 end
