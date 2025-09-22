@@ -30,7 +30,7 @@ class TasksController < ApplicationController
   end
 
   def destroy
-    @task.destroy!
+    @task.update({ deleted_at: Date.today, status: Task.statuses[:cancelled] })
   end
 
   private
