@@ -1,10 +1,21 @@
 module Api
   module V1
     class TasksController < ApplicationController
+      include Pagy::Backend
       before_action :set_task, only: %i[ show update destroy ]
 
       def index
-        @tasks = Task.all
+        if params[:q].present?
+          @q = Task.where.not(status: 5).ransack(
+            title_or_description_cont: params[:q],
+            delivery_date_eq: params[:delivery_date],
+            created_at_eq: params[:created_at]
+          )
+          @tasks_search = @q.result
+        else
+          @tasks_search = Task.where.not(status: 5).all
+        end
+        @pagy, @tasks = pagy(@tasks_search)
         render json: @tasks
       end
 
