@@ -51,4 +51,16 @@ group :development, :test do
 
   # https://rubygems.org/gems/pry-rails/versions/0.3.3?locale=pt-BR
   gem 'pry-rails'
+
+  # It's a library for generating fake data such as names, addresses, and phone numbers. [https://github.com/faker-ruby/faker]
+  gem 'faker'
+
+  # is a fixtures replacement with a straightforward definition syntax [https://github.com/thoughtbot/factory_bot_rails]
+  gem 'factory_bot_rails'
+
+   # rspec-rails is a testing framework for Rails [https://rubygems.org/gems/rspec-rails]
+  gem 'rspec-rails'
+
+  # Shoulda Matchers provides RSpec and Minitest one-liners to test common Rails functionality that, if written by hand, would be much longer, more complex, and error-prone. [https://rubygems.org/gems/shoulda-matchers/versions/6.2.0] 
+  gem 'shoulda-matchers'
 end
