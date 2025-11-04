@@ -4,7 +4,7 @@ module Api
       before_action :set_task, only: %i[ show update destroy ]
 
       def index
-        @tasks = Task.all
+        @tasks = Task.active
         render json: @tasks
       end
 
@@ -31,7 +31,7 @@ module Api
 
       def destroy
         if @task.present?
-          @task.update({ deleted_at: Date.today, status: Task.statuses[:cancelled] })
+          @task.destroy
           render json: @task, status: :ok
         else
           render json: { error: "Task not found" }, status: :not_found

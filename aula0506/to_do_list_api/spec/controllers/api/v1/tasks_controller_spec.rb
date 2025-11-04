@@ -16,10 +16,16 @@ RSpec.describe Api::V1::TasksController, type: :controller do
       let!(:tasks) { create_list(:task, 3) }
       let!(:cancelled_task) { create(:cancelled_task) }
 
-      it "returns all tasks including soft deleted ones" do
+      it "returns only active tasks" do
         get :index
         expect(response).to have_http_status(:ok)
-        expect(json_response.length).to eq(4)
+        expect(json_response.length).to eq(3)
+      end
+
+      it "excludes soft deleted tasks" do
+        get :index
+        returned_ids = json_response.map { |task| task["id"] }
+        expect(returned_ids).not_to include(cancelled_task.id)
       end
 
       it "returns tasks with required attributes" do
@@ -28,13 +34,6 @@ RSpec.describe Api::V1::TasksController, type: :controller do
         %w[id title description status delivery_date created_at updated_at].each do |attr|
           expect(task).to have_key(attr)
         end
-      end
-
-      it "includes soft deleted tasks" do
-        get :index
-        cancelled = json_response.find { |task| task["id"] == cancelled_task.id }
-        expect(cancelled["status"]).to eq("cancelled")
-        expect(cancelled["deleted_at"]).to be_present
       end
     end
   end
