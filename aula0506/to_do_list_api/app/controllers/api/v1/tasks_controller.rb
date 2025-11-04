@@ -4,7 +4,9 @@ module Api
       before_action :set_task, only: %i[ show update destroy ]
 
       def index
-        @tasks = Task.active
+        search = Task.active.ransack(params[:q]) 
+        @tasks = search.result.page(params[:page]).per(params[:per_page] || 10)
+
         render json: @tasks
       end
 

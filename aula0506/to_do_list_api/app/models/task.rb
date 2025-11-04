@@ -16,4 +16,9 @@ class Task < ApplicationRecord
   def destroy
     update({ deleted_at: Date.today, status: Task.statuses[:cancelled] })
   end
+
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["created_at", "deleted_at", "delivery_date", "description", "id", "id_value", "status", "title", "updated_at"]
+  end
 end

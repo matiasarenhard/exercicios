@@ -36,6 +36,38 @@ RSpec.describe Api::V1::TasksController, type: :controller do
         end
       end
     end
+  
+    context "when filtering tasks" do
+      let!(:task1) { create(:task, title: "Play video games", status: "initial") }
+      let!(:task2) { create(:task, title: "Work on project", status: "in_progress") }
+      let!(:task3) { create(:task, title: "Clean the dishes", status: "completed") }
+
+      it "filters by title substring (title_cont)" do
+        get :index, params: { q: { title_cont: "Clean" } }
+
+        expect(response).to have_http_status(:ok)
+        titles = json_response.map { |t| t["title"] }
+
+        expect(titles).to include("Clean the dishes")
+        expect(titles).not_to include("Play video games", "Work on project")
+      end
+
+      it "filters by exact status (status_eq)" do
+        get :index, params: { q: { status_eq: "in_progress" } }
+
+        expect(response).to have_http_status(:ok)
+        expect(json_response.size).to eq(1)
+        expect(json_response.first["title"]).to eq("Work on project")
+      end
+
+      it "combines multiple filters" do
+        get :index, params: { q: { title_cont: "Play", status_eq: "initial" } }
+
+        expect(response).to have_http_status(:ok)
+        expect(json_response.size).to eq(1)
+        expect(json_response.first["title"]).to eq("Play video games")
+      end
+    end
   end
 
   describe "GET #show" do
