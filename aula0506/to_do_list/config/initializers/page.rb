@@ -1,1 +1,0 @@
-Pagy::DEFAULT.freeze
