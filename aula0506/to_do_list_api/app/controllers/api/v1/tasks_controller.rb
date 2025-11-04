@@ -15,7 +15,7 @@ module Api
       def create
         @task = Task.new(task_params)
         if @task.save
-          render json: @task, status: :created, location: @task
+          render json: @task, status: :created
         else
           render json: @task.errors, status: :unprocessable_entity
         end
@@ -30,7 +30,12 @@ module Api
       end
 
       def destroy
-        @task.update({ deleted_at: Date.today, status: Task.statuses[:cancelled] })
+        if @task.present?
+          @task.update({ deleted_at: Date.today, status: Task.statuses[:cancelled] })
+          render json: @task, status: :ok
+        else
+          render json: { error: "Task not found" }, status: :not_found
+        end      
       end
 
       private
