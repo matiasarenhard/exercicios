@@ -19,4 +19,9 @@ FactoryBot.define do
     status { "overdue" }
     delivery_date { 1.week.ago }
   end
+
+  factory :in_progress_task, parent: :task do
+    status { "in_progress" }
+    delivery_date { Faker::Date.between(from: 1.day.from_now, to: 2.weeks.from_now) }
+  end
 end
