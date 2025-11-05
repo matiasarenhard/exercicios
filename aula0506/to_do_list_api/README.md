@@ -1,24 +1,31 @@
-# README
+# to_do_list_api
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+```
+Ruby 3.4.4
+Rails 8.0.3
+PostgreSQL 16.8
+```
 
-Things you may want to cover:
+Comandos para construir o projeto: 
+```
+ bundle install
+ bin/rails db:create db:migrate db:seed
+ bin/rails s
+```
+http://localhost:3000
 
-* Ruby version
+Rodar tests
+```
+bundle exec rspec
+```
 
-* System dependencies
+<img width="1651" height="1358" alt="image" src="https://github.com/user-attachments/assets/a3a4addc-cf32-4067-8c9d-9fa6a840e442" />
 
-* Configuration
 
-* Database creation
+Documentação: 
+```
+rake rswag:specs:swaggerize
+```
 
-* Database initialization
+http://localhost:3000/api-docs/index.html
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
