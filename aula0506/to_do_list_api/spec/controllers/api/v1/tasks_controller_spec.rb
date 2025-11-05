@@ -38,9 +38,11 @@ RSpec.describe Api::V1::TasksController, type: :controller do
     end
   
     context "when filtering tasks" do
-      let!(:task1) { create(:task, title: "Play video games", status: "initial") }
-      let!(:task2) { create(:task, title: "Work on project", status: "in_progress") }
+      let!(:task1) { create(:task, title: "Play video games", status: "initial", delivery_date: 1.week.ago) }
+      let!(:task2) { create(:task, title: "Work on project", status: "in_progress", delivery_date: 1.week.from_now) }
       let!(:task3) { create(:task, title: "Clean the dishes", status: "completed") }
+      let!(:recent_task) { create(:task, title: "Recent task", created_at: 2.hour.ago) }
+      let!(:old_task) { create(:task, title: "Really old task", created_at: 1.month.ago) } 
 
       it "filters by title substring (title_cont)" do
         get :index, params: { q: { title_cont: "Clean" } }
@@ -66,6 +68,41 @@ RSpec.describe Api::V1::TasksController, type: :controller do
         expect(response).to have_http_status(:ok)
         expect(json_response.size).to eq(1)
         expect(json_response.first["title"]).to eq("Play video games")
+      end
+
+      it "filters by delivery_date greater than or equal to a date (delivery_date_gteq)" do
+        get :index, params: { q: { delivery_date_gteq: Date.today } }
+
+        expect(response).to have_http_status(:ok)
+        titles = json_response.map { |t| t["title"] }
+        expect(titles).to include("Work on project")
+        expect(titles).not_to include("Play video games")
+      end
+
+      it "filters by delivery_date less than or equal to a date (delivery_date_lteq)" do
+        get :index, params: { q: { delivery_date_lteq: Date.today } }
+
+        expect(response).to have_http_status(:ok)
+        titles = json_response.map { |t| t["title"] }
+        expect(titles).to include("Play video games")
+        expect(titles).not_to include("Work on project")
+      end
+
+      it "filters by created_at greater than or equal to a date (created_at_gteq)" do
+        get :index, params: { q: { created_at_gteq: 1.week.ago } }
+
+        expect(response).to have_http_status(:ok)
+        titles = json_response.map { |t| t["title"] }
+        expect(titles).not_to include("Really old task")
+      end
+
+      it "filters by created_at less than or equal to a date (created_at_lteq)" do
+        get :index, params: { q: { created_at_lteq: DateTime.now } }
+
+        expect(response).to have_http_status(:ok)
+        titles = json_response.map { |t| t["title"] }
+        expect(titles).to include("Recent task")
+        expect(json_response.size).to be >= 1
       end
     end
   end
