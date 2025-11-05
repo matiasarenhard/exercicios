@@ -66,4 +66,7 @@ group :development, :test do
 
   # Shoulda Matchers provides RSpec and Minitest one-liners to test common Rails functionality that, if written by hand, would be much longer, more complex, and error-prone. [https://rubygems.org/gems/shoulda-matchers/versions/6.2.0] 
   gem 'shoulda-matchers'
+
+  # Generate beautiful API documentation [https://rubygems.org/gems/rswag/versions/2.10.1?locale=pt-BR] 
+  gem 'rswag'
 end

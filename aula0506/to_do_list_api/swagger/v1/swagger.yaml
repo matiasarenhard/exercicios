@@ -1,0 +1,339 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/v1/tasks":
+    get:
+      summary: list tasks
+      tags:
+      - Tasks
+      parameters:
+      - name: q[title_cont]
+        in: query
+        required: false
+        description: Filter by title containing text
+        schema:
+          type: string
+      - name: q[status_eq]
+        in: query
+        required: false
+        description: Filter by exact status match
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 1
+                    title:
+                      type: string
+                      example: Sample Task
+                    description:
+                      type: string
+                      example: Task description
+                    status:
+                      type: string
+                      example: initial
+                    delivery_date:
+                      type: string
+                      format: date
+                      nullable: true
+                      example: '2025-11-15'
+                    created_at:
+                      type: string
+                      format: datetime
+                      example: '2025-11-04T10:00:00Z'
+                    updated_at:
+                      type: string
+                      format: datetime
+                      example: '2025-11-04T10:00:00Z'
+                    deleted_at:
+                      type: string
+                      format: datetime
+                      nullable: true
+                      example:
+    post:
+      summary: create task
+      tags:
+      - Tasks
+      parameters: []
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  title:
+                    type: string
+                    example: New Task
+                  description:
+                    type: string
+                    example: Task description
+                  status:
+                    type: string
+                    example: initial
+                  delivery_date:
+                    type: string
+                    format: date
+                    nullable: true
+                    example: '2025-11-15'
+                  created_at:
+                    type: string
+                    format: datetime
+                    example: '2025-11-04T10:00:00Z'
+                  updated_at:
+                    type: string
+                    format: datetime
+                    example: '2025-11-04T10:00:00Z'
+                  deleted_at:
+                    type: string
+                    format: datetime
+                    nullable: true
+                    example:
+        '422':
+          description: unprocessable entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: array
+                    items:
+                      type: string
+                  description:
+                    type: array
+                    items:
+                      type: string
+                  status:
+                    type: array
+                    items:
+                      type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                task:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                      example: New Task
+                    description:
+                      type: string
+                      example: Task description
+                    status:
+                      type: string
+                      enum:
+                      - initial
+                      - in_progress
+                      - completed
+                      - cancelled
+                      - overdue
+                      example: initial
+                    delivery_date:
+                      type: string
+                      format: date
+                      nullable: true
+                      example: '2025-11-15'
+                  required:
+                  - title
+                  - description
+                  - status
+              required:
+              - task
+  "/api/v1/tasks/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Task ID
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show task
+      tags:
+      - Tasks
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  title:
+                    type: string
+                    example: Sample Task
+                  description:
+                    type: string
+                    example: Task description
+                  status:
+                    type: string
+                    example: initial
+                  delivery_date:
+                    type: string
+                    format: date
+                    nullable: true
+                    example: '2025-11-15'
+                  created_at:
+                    type: string
+                    format: datetime
+                    example: '2025-11-04T10:00:00Z'
+                  updated_at:
+                    type: string
+                    format: datetime
+                    example: '2025-11-04T10:00:00Z'
+                  deleted_at:
+                    type: string
+                    format: datetime
+                    nullable: true
+                    example:
+        '404':
+          description: not found
+    patch:
+      summary: update task
+      tags:
+      - Tasks
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  title:
+                    type: string
+                    example: Updated Task
+                  description:
+                    type: string
+                    example: Updated description
+                  status:
+                    type: string
+                    example: in_progress
+                  delivery_date:
+                    type: string
+                    format: date
+                    nullable: true
+                    example: '2025-11-20'
+                  created_at:
+                    type: string
+                    format: datetime
+                    example: '2025-11-04T10:00:00Z'
+                  updated_at:
+                    type: string
+                    format: datetime
+                    example: '2025-11-04T10:00:00Z'
+                  deleted_at:
+                    type: string
+                    format: datetime
+                    nullable: true
+                    example:
+        '422':
+          description: unprocessable entity
+        '404':
+          description: not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                task:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                      example: Updated Task
+                    description:
+                      type: string
+                      example: Updated description
+                    status:
+                      type: string
+                      enum:
+                      - initial
+                      - in_progress
+                      - completed
+                      - cancelled
+                      - overdue
+                      example: in_progress
+                    delivery_date:
+                      type: string
+                      format: date
+                      nullable: true
+                      example: '2025-11-20'
+              required:
+              - task
+    delete:
+      summary: delete task
+      tags:
+      - Tasks
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  title:
+                    type: string
+                    example: Sample Task
+                  description:
+                    type: string
+                    example: Task description
+                  status:
+                    type: string
+                    example: cancelled
+                  delivery_date:
+                    type: string
+                    format: date
+                    nullable: true
+                    example: '2025-11-15'
+                  created_at:
+                    type: string
+                    format: datetime
+                    example: '2025-11-04T10:00:00Z'
+                  updated_at:
+                    type: string
+                    format: datetime
+                    example: '2025-11-04T10:00:00Z'
+                  deleted_at:
+                    type: string
+                    format: datetime
+                    example: '2025-11-04T10:00:00Z'
+        '404':
+          description: not found
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: http://localhost:3000
