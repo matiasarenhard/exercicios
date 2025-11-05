@@ -18,6 +18,24 @@ RSpec.describe Task, type: :model do
         expect(Task.inactive).not_to include(active_task)
       end
     end
+
+    describe ".overdue" do
+      let!(:overdue_task) { create(:task, delivery_date: 3.days.ago, status: :in_progress, deleted_at: nil) }
+      let!(:future_task)  { create(:task, delivery_date: 3.days.from_now, status: :in_progress, deleted_at: nil) }
+      let!(:completed_task) { create(:task, delivery_date: 5.days.ago, status: :completed, deleted_at: nil) }
+      let!(:cancelled_task) { create(:task, delivery_date: 5.days.ago, status: :cancelled, deleted_at: nil) }
+      let!(:inactive_task)  { create(:task, delivery_date: 5.days.ago, status: :in_progress, deleted_at: Date.today) }
+
+      it "returns only active tasks with past delivery_date that are not completed or cancelled" do
+        result = Task.overdue
+
+        expect(result).to include(overdue_task)
+        expect(result).not_to include(future_task)
+        expect(result).not_to include(completed_task)
+        expect(result).not_to include(cancelled_task)
+        expect(result).not_to include(inactive_task)
+      end
+    end
   end
 
   describe "#destroy" do

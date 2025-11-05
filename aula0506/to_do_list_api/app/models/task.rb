@@ -13,6 +13,8 @@ class Task < ApplicationRecord
 
   scope :inactive, -> { where.not(deleted_at: nil) }
 
+  scope :overdue, -> { active.where("delivery_date < ?", Date.current).where.not(status: [:completed, :cancelled]) }
+
   def destroy
     update({ deleted_at: Date.today, status: Task.statuses[:cancelled] })
   end
