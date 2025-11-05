@@ -1,9 +1,24 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+require 'factory_bot_rails'
+require 'faker'
+
+puts "Seeding tasks..."
+
+Task.delete_all
+
+FactoryBot.create_list(:task, 10)
+
+FactoryBot.create_list(:overdue_task, 5)
+
+FactoryBot.create_list(:completed_task, 5)
+
+FactoryBot.create_list(:cancelled_task, 3)
+
+FactoryBot.create_list(:in_progress_task, 10)
+
+puts "Done! Created:"
+puts "  #{Task.where(status: 'initial').count} initial tasks"
+puts "  #{Task.where(status: 'overdue').count} overdue tasks"
+puts "  #{Task.where(status: 'completed').count} completed tasks"
+puts "  #{Task.where(status: 'cancelled').count} cancelled tasks"
+puts "  #{Task.where(status: 'in_progress').count} in progress tasks"
+puts "Total: #{Task.count} tasks"
