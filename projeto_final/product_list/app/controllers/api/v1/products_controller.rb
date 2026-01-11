@@ -16,7 +16,7 @@ class Api::V1::ProductsController < ApplicationController
     if @product.save
       render json: @product, status: :created
     else
-      render json: @product.errors, status: :unprocessable_entity
+      render json: @product.errors, status: :unprocessable_content
     end
   end
 
@@ -24,7 +24,7 @@ class Api::V1::ProductsController < ApplicationController
     if @product.update(product_params)
       render json: @product
     else
-      render json: @product.errors, status: :unprocessable_entity
+      render json: @product.errors, status: :unprocessable_content
     end
   end
 

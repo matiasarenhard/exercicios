@@ -58,9 +58,9 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
         }.not_to change(Product, :count)
       end
 
-      it 'returns an unprocessable entity status' do
+      it 'returns an unprocessable content status' do
         post :create, params: { product: invalid_attributes }
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
   end
@@ -81,9 +81,9 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
     end
 
     context 'with invalid parameters' do
-      it 'returns an unprocessable entity status' do
+      it 'returns an unprocessable content status' do
         patch :update, params: { id: product.id, product: invalid_attributes }
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
   end
