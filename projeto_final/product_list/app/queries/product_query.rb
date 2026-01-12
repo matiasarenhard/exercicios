@@ -6,10 +6,10 @@ class ProductQuery
   DEFAULT_PAGE = 1
   DEFAULT_PER_PAGE = 10
 
-  search_text :name
-  search_text :description
+  search_text :name, predicate: :cont
+  search_text :description, predicate: :cont
   search_numeric :value, converter: :to_f
-  search_numeric :quantity
+  search_numeric :quantity, predicate: :eq  
 
   def initialize(search_term: nil, page: DEFAULT_PAGE, per_page: DEFAULT_PER_PAGE)
     @search_term = search_term.to_s.strip
