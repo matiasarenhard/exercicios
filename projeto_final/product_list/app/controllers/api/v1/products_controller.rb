@@ -2,7 +2,12 @@ class Api::V1::ProductsController < ApplicationController
   before_action :set_product, only: %i[show update destroy]
 
   def index
-    @products = Product.all
+    @products = ProductQuery.new(
+      search_term: params[:q], 
+      page: params[:page], 
+      per_page: params[:per_page]
+    ).run
+    
     render json: @products
   end
 
