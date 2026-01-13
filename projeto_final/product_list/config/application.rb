@@ -34,5 +34,7 @@ module ProductList
     end
     
     config.autoload_paths += %W(#{config.root}/app/queries)
+
+    config.active_job.queue_adapter = :solid_queue
   end
 end
