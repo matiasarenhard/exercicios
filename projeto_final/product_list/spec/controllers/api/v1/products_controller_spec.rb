@@ -101,4 +101,22 @@ RSpec.describe Api::V1::ProductsController, type: :controller do
       expect(response).to have_http_status(:no_content)
     end
   end
+
+  describe 'GET #export' do
+    let!(:product) { create(:product, name: 'Test Product') }
+
+    before { get :export }
+
+    it 'returns CSV with correct headers' do
+      expect(response.headers['Content-Type']).to eq('text/csv')
+      expect(response.headers['Content-Disposition']).to include('products-')
+      expect(response.headers['Content-Disposition']).to include('.csv')
+    end
+
+    it 'includes CSV data' do
+      csv_content = response.body.to_a.join
+      expect(csv_content).to include('ID,Name,Description,Value,Quantity,Available')
+      expect(csv_content).to include('Test Product')
+    end
+  end
 end

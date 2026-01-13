@@ -38,6 +38,14 @@ class Api::V1::ProductsController < ApplicationController
     head :no_content
   end
 
+  def export
+    headers["Content-Type"] = "text/csv"
+    headers["Content-Disposition"] = "attachment; filename=products-#{Date.today}.csv"
+    headers["Last-Modified"] = Time.now.httpdate
+
+    self.response_body = Products::CreateProductsCsv.new.call
+  end
+
   private
 
   def set_product
