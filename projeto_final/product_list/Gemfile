@@ -44,6 +44,9 @@ gem 'kaminari'
 # The CSV library provides a complete interface to CSV files and data.[https://rubygems.org/gems/csv/versions/1.0.1]
 gem 'csv'
 
+# Paranoia is a re-implementation of acts_as_paranoid for Rails 5, 6, and 7, using less code [https://rubygems.org/gems/paranoia/versions/3.1.0]
+gem 'paranoia', '~> 3.1'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
