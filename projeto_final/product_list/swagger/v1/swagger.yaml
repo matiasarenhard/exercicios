@@ -1,0 +1,151 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/v1/products":
+    get:
+      summary: List products
+      tags:
+      - Products
+      parameters:
+      - name: q
+        in: query
+        required: false
+        description: Search term
+        schema:
+          type: string
+      - name: page
+        in: query
+        required: false
+        description: Page number
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        required: false
+        description: Items per page
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: products found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    value:
+                      type: number
+                    quantity:
+                      type: integer
+                    available:
+                      type: boolean
+    post:
+      summary: Create a product
+      tags:
+      - Products
+      parameters: []
+      responses:
+        '201':
+          description: product created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    value:
+                      type: number
+                    quantity:
+                      type: integer
+                    available:
+                      type: boolean
+                  required:
+                  - name
+                  - description
+                  - value
+                  - quantity
+  "/api/v1/products/{id}":
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      summary: Show a product
+      tags:
+      - Products
+      responses:
+        '200':
+          description: product found
+        '404':
+          description: product not found
+    patch:
+      summary: Update a product
+      tags:
+      - Products
+      parameters: []
+      responses:
+        '200':
+          description: product updated
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                product:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    value:
+                      type: number
+                    quantity:
+                      type: integer
+                    available:
+                      type: boolean
+    delete:
+      summary: Delete a product
+      tags:
+      - Products
+      responses:
+        '204':
+          description: product deleted
+  "/api/v1/products/export":
+    get:
+      summary: Export products to CSV
+      tags:
+      - Products
+      responses:
+        '200':
+          description: CSV file
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com
